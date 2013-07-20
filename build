@@ -1,0 +1,22 @@
+#!/bin/bash
+make mrproper -j16
+export ARCH=arm
+export TARGET_PRODUCT=l1m_MPCS_US
+export CROSS_COMPILE=/media/playfulgod/Android1/CM10-2nd-init/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-
+#export CROSS_COMPILE=/media/playfulgod/Android1/CM10-Motion/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi-
+make l1m-perf_defconfig
+make -j16
+#
+if [ -f arch/arm/boot/zImage ]; then
+	  echo
+      echo "Kernel has been compiled!!! You can find it in arch/arm/boot/zImage"
+	  echo
+else
+      echo
+	  echo "Kernel did not compile, please check for errors!!"
+	  echo
+fi
+
+# These move files to easier locations
+mkdir arch/arm/boot/modules
+find -name '*.ko' -exec cp -av {} arch/arm/boot/modules/ \;
